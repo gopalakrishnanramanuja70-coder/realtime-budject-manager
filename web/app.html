@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14161f">
+  <meta name="color-scheme" content="light dark">
+  <title>Expensify</title>
+  <meta name="description" content="Track spending, keep to a monthly budget and learn to use money well.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b6e5c'/%3E%3Cpath d='M9 22V10m7 12V14m7 8V8' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="./vendor/fonts/instrument-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./app.css">
+  <script src="./vendor/tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { paper: 'var(--color-paper)', surface: 'var(--color-paper-2)', sunk: 'var(--color-paper-3)', ink: 'var(--color-ink)', 'ink-2': 'var(--color-ink-2)', muted: 'var(--color-muted)', rule: 'var(--color-rule)', accent: 'var(--color-accent)', over: 'var(--color-over)' },
+        fontFamily: { sans: ['var(--font-body)'] }
+      } }
+    };
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <svg width="0" height="0" class="absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 7h11M8 12h11M8 17h11M4.5 7h.01M4.5 12h.01M4.5 17h.01"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v14H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M10 5H6.5A1.5 1.5 0 0 0 5 6.5v11A1.5 1.5 0 0 0 6.5 19H10M15 8l4 4-4 4M19 12H9.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="container flex items-center gap-4 min-h-[56px] md:min-h-[64px]">
+      <a href="#/overview" class="wordmark no-underline text-ink" translate="no">Expensify</a>
+      <nav class="topnav hidden md:flex ml-4" aria-label="Main">
+        <a href="#/overview" data-nav="overview">Overview</a>
+        <a href="#/transactions" data-nav="transactions">Transactions</a>
+        <a href="#/budgets" data-nav="budgets">Budgets</a>
+        <a href="#/learn" data-nav="learn">Learn</a>
+      </nav>
+      <div class="ml-auto flex items-center gap-1" role="group" aria-label="Month">
+        <button type="button" class="btn btn-quiet btn-icon" id="prev-month" aria-label="Previous month"><svg aria-hidden="true" class="icon"><use href="#i-left"/></svg></button>
+        <span id="month-label" class="min-w-[7.5rem] text-center font-semibold num" aria-live="polite"></span>
+        <button type="button" class="btn btn-quiet btn-icon" id="next-month" aria-label="Next month"><svg aria-hidden="true" class="icon"><use href="#i-right"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-primary hidden md:inline-flex" data-open-add><svg aria-hidden="true" class="icon"><use href="#i-plus"/></svg>Add transaction</button>
+      <span id="who" class="hidden xl:inline text-sm muted max-w-[14rem] truncate" translate="no"></span>
+      <button type="button" class="btn btn-quiet btn-icon" id="logout" aria-label="Log out" title="Log out"><svg aria-hidden="true" class="icon"><use href="#i-out"/></svg></button>
+    </div>
+  </header>
+
+  <main class="container pt-8 pb-16" id="main">
+    <div id="error" class="banner mb-6" role="alert" hidden>
+      <p id="error-text">Expensify could not reach the server. Check that it is still running, then try again.</p>
+      <button type="button" class="btn" id="retry">Try again</button>
+    </div>
+
+    <section id="view-overview" aria-labelledby="h-overview" hidden>
+      <h1 id="h-overview" class="visually-hidden">Overview</h1>
+      <div class="grid lg:grid-cols-12 gap-x-10 gap-y-10 items-start">
+        <div class="lg:col-span-7">
+          <div id="hero-figure" class="grid gap-5">
+            <div class="sk h-14 w-3/4 max-w-sm"></div>
+            <div class="sk h-3 w-full"></div>
+          </div>
+        </div>
+        <dl class="lg:col-span-5 grid gap-0" id="totals"></dl>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6 mt-10">
+        <div class="panel panel-chart lg:col-span-8">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 id="chart-title">Spending</h2>
+            <div class="seg" role="group" aria-label="Chart view">
+              <button type="button" data-mode="daily" aria-pressed="false">Each day</button>
+              <button type="button" data-mode="running" aria-pressed="true">Running total</button>
+            </div>
+          </div>
+          <div class="chart-box"><canvas id="chart" role="img" aria-label="Spending chart"></canvas></div>
+          <p class="lede mt-3" id="chart-note"></p>
+        </div>
+        <div class="panel lg:col-span-4">
+          <h2>Where it went</h2>
+          <ul class="rows mt-3" id="categories"><li class="sk h-24"></li></ul>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6 mt-6 items-start">
+        <div class="panel lg:col-span-7">
+          <h2 class="mb-4">Ways to spend less</h2>
+          <div id="insights"><div class="sk h-24"></div></div>
+        </div>
+        <div class="panel lg:col-span-5">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <h2>Latest</h2>
+            <a class="btn btn-quiet no-underline" href="#/transactions">See all</a>
+          </div>
+          <div id="recent"><div class="sk h-24"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-transactions" aria-labelledby="h-transactions" hidden>
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+        <h1 id="h-transactions" class="text-[var(--text-2xl)]">Transactions</h1>
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="seg" role="group" aria-label="Type" id="type-filter">
+            <button type="button" data-type="" aria-pressed="true">All</button>
+            <button type="button" data-type="EXPENSE" aria-pressed="false">Expenses</button>
+            <button type="button" data-type="INCOME" aria-pressed="false">Income</button>
+          </div>
+          <label class="visually-hidden" for="cat-filter">Category</label>
+          <select id="cat-filter" name="category-filter" autocomplete="off" class="select !w-auto min-w-[10rem]"></select>
+        </div>
+      </div>
+      <div class="panel" id="tx-panel"><div class="sk h-40"></div></div>
+    </section>
+
+    <section id="view-budgets" aria-labelledby="h-budgets" hidden>
+      <div class="mb-6">
+        <h1 id="h-budgets" class="text-[var(--text-2xl)]">Budgets</h1>
+        <p class="lede mt-1">Monthly limits apply to every month. Change one and your overview updates straight away.</p>
+      </div>
+      <div class="panel" id="budget-panel"><div class="sk h-40"></div></div>
+    </section>
+
+    <section id="view-learn" aria-labelledby="h-learn" hidden>
+      <div class="mb-6">
+        <h1 id="h-learn" class="text-[var(--text-2xl)]">Use money wisely</h1>
+        <p class="lede mt-1">Two tools that use your own numbers, then a few habits worth keeping.</p>
+      </div>
+      <div class="grid lg:grid-cols-12 gap-6 items-start">
+        <div class="panel lg:col-span-7" id="split-panel"></div>
+        <div class="panel lg:col-span-5" id="fund-panel"></div>
+      </div>
+      <div class="panel mt-6">
+        <h2 class="mb-2">Habits worth keeping</h2>
+        <div id="lessons"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar md:hidden" aria-label="Main">
+    <a href="#/overview" data-nav="overview"><svg aria-hidden="true" class="icon"><use href="#i-home"/></svg>Overview</a>
+    <a href="#/transactions" data-nav="transactions"><svg aria-hidden="true" class="icon"><use href="#i-list"/></svg>Activity</a>
+    <button type="button" class="add-fab" data-open-add aria-label="Add transaction"><span class="fab"><svg aria-hidden="true" class="icon"><use href="#i-plus"/></svg></span></button>
+    <a href="#/budgets" data-nav="budgets"><svg aria-hidden="true" class="icon"><use href="#i-target"/></svg>Budgets</a>
+    <a href="#/learn" data-nav="learn"><svg aria-hidden="true" class="icon"><use href="#i-book"/></svg>Learn</a>
+  </nav>
+
+  <dialog class="sheet" id="add-dialog" aria-labelledby="add-title">
+    <form method="dialog" id="add-form" class="grid gap-5" novalidate>
+      <div class="flex items-center justify-between gap-3">
+        <h2 id="add-title">Add transaction</h2>
+        <button type="button" class="btn btn-quiet btn-icon" data-close aria-label="Close"><svg aria-hidden="true" class="icon"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="seg w-full" role="group" aria-label="Type" id="add-type">
+        <button type="button" class="flex-1" data-type="EXPENSE" aria-pressed="true">Expense</button>
+        <button type="button" class="flex-1" data-type="INCOME" aria-pressed="false">Income</button>
+      </div>
+      <div class="field">
+        <label for="add-amount">Amount in rupees</label>
+        <input class="input input-amount num" id="add-amount" name="amount" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0" enterkeyhint="done">
+        <p class="over text-sm" id="add-error" role="alert" hidden></p>
+      </div>
+      <fieldset class="field border-0 p-0 m-0 min-w-0">
+        <legend class="label p-0 mb-1.5 text-sm font-medium text-ink-2">Category</legend>
+        <div class="chips" id="add-cats"></div>
+      </fieldset>
+      <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+        <div class="field"><label for="add-date">Date</label><input class="input" type="date" id="add-date" name="date" autocomplete="off"></div>
+        <div class="field"><label for="add-note">Note</label><input class="input" id="add-note" name="note" maxlength="200" autocomplete="off" placeholder="Optional, e.g. lunch…"></div>
+      </div>
+      <button type="submit" class="btn btn-primary w-full min-h-[48px]" id="add-submit">Add expense</button>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="./vendor/chart.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

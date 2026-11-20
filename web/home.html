@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14161f">
+  <meta name="color-scheme" content="light dark">
+  <title>Expensify, a budget you can keep</title>
+  <meta name="description" content="Track spending, hold a monthly budget and find what to cut. Expensify shows where your money goes and teaches you to use it wisely.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b6e5c'/%3E%3Cpath d='M9 22V10m7 12V14m7 8V8' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="./vendor/fonts/instrument-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./app.css">
+  <link rel="stylesheet" href="./home.css">
+  <script src="./vendor/tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { paper: 'var(--color-paper)', surface: 'var(--color-paper-2)', sunk: 'var(--color-paper-3)', ink: 'var(--color-ink)', 'ink-2': 'var(--color-ink-2)', muted: 'var(--color-muted)', rule: 'var(--color-rule)', accent: 'var(--color-accent)' },
+        fontFamily: { sans: ['var(--font-body)'] }
+      } }
+    };
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="container flex items-center justify-between gap-4 min-h-[72px]">
+    <a href="/" class="wordmark" translate="no">Expensify</a>
+    <nav class="flex items-center gap-2" aria-label="Account" id="account-nav">
+      <a href="/login" class="btn btn-quiet">Log in</a>
+      <a href="/login?mode=signup" class="btn btn-primary">Create account</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="container grid lg:grid-cols-12 gap-10 lg:gap-14 items-center home-hero" aria-labelledby="hero-title">
+      <div class="lg:col-span-6">
+        <h1 id="hero-title" class="home-h1">Know where your money goes.</h1>
+        <p class="home-p">Track spending, hold a monthly budget and find what to cut.</p>
+        <div class="flex flex-wrap gap-3 mt-8" id="hero-actions">
+          <a href="/login?mode=signup" class="btn btn-primary btn-lg">Create account</a>
+          <a href="/login" class="btn btn-lg">Log in</a>
+        </div>
+      </div>
+      <figure class="lg:col-span-6 m-0">
+        <div class="shot">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="img/hero-dark.png">
+            <img src="img/hero-light.png" width="1770" height="1446" fetchpriority="high" decoding="async" alt="The Expensify overview: 7,863 rupees left to spend against a 32,000 rupee budget, a running-spend graph with an even-pace line, and spending by category.">
+          </picture>
+        </div>
+        <figcaption class="lede mt-3">Expensify with sample data.</figcaption>
+      </figure>
+    </section>
+
+    <section class="container grid lg:grid-cols-12 gap-10 lg:gap-14 items-center home-section" aria-labelledby="cut-title">
+      <figure class="lg:col-span-7 m-0 lg:order-first order-last">
+        <div class="shot-bare">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="img/insights-dark.png">
+            <img src="img/insights-light.png" width="825" height="444" loading="lazy" decoding="async" alt="A list headed Ways to spend less, with tips drawn from the month's transactions and a button to cap a category.">
+          </picture>
+        </div>
+      </figure>
+      <div class="lg:col-span-5">
+        <h2 id="cut-title" class="home-h2">See what to trim.</h2>
+        <p class="home-p">Tips come from your own transactions: a category over its limit, a rise on last month, a pile of small purchases. One button sets a cap.</p>
+      </div>
+    </section>
+
+    <section class="container grid lg:grid-cols-12 gap-10 lg:gap-14 items-center home-section" aria-labelledby="learn-title">
+      <div class="lg:col-span-5">
+        <h2 id="learn-title" class="home-h2">Learn to use money wisely.</h2>
+        <p class="home-p">Split your income with the 50/30/20 rule of thumb, size an emergency fund, and read short habits that fit your numbers.</p>
+      </div>
+      <figure class="lg:col-span-6 lg:col-start-7 m-0">
+        <div class="shot-bare">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="img/learn-dark.png">
+            <img src="img/learn-light.png" width="825" height="891" loading="lazy" decoding="async" alt="The income split tool comparing needs, wants and savings against 50, 30 and 20 percent targets.">
+          </picture>
+        </div>
+      </figure>
+    </section>
+
+    <section class="container grid lg:grid-cols-12 gap-6 lg:gap-14 home-section" aria-labelledby="private-title">
+      <h2 id="private-title" class="home-h2 lg:col-span-5">Your numbers stay yours.</h2>
+      <p class="home-p lg:col-span-6 lg:col-start-7 !mt-0">Every account sees only its own transactions and budgets. Passwords are hashed, and your data lives in a database on the machine that runs Expensify.</p>
+    </section>
+
+    <section class="container home-section" aria-labelledby="start-title">
+      <div class="cta">
+        <h2 id="start-title" class="home-h2 cta-title">Start with an empty month.</h2>
+        <div class="flex flex-wrap gap-3 mt-8" id="cta-actions">
+          <a href="/login?mode=signup" class="btn btn-primary btn-lg">Create account</a>
+          <a href="/login" class="btn btn-lg">Log in</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container flex items-center justify-between gap-4 home-footer">
+    <a href="/" class="wordmark" translate="no">Expensify</a>
+    <nav class="flex items-center gap-2" aria-label="Footer" id="footer-nav">
+      <a href="/login" class="btn btn-quiet">Log in</a>
+      <a href="/login?mode=signup" class="btn btn-quiet">Create account</a>
+    </nav>
+  </footer>
+
+  <script src="./home.js"></script>
+</body>
+</html>
