@@ -1,0 +1,9 @@
+build/
+lib/
+*.db
+*.db-shm
+*.db-wal
+.taste-skill/
+.hallmark/
+*.log 
+*.err 

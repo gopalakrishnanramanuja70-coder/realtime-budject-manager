@@ -1,0 +1,18 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom
+ * paper: oklch(96.5% 0.008 150) · accent: oklch(46% 0.1 172) · display: Instrument Sans · body: Instrument Sans
+ * nav: wordmark and a way home · signature: none, a single focused form · states: idle, pending, error
+ * axes: light/grotesk-sans/chromatic-green · posture: workbench · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E3 S4 R4 V3 · weakest: V, a login is deliberately plain so the form is the whole screen */
+
+.auth-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); width: 100%; max-width: var(--container); margin-inline: auto; padding: calc(var(--space-md) + env(safe-area-inset-top)) var(--gutter) var(--space-md); }
+.auth-main { display: grid; place-items: start center; padding: var(--space-xl) var(--gutter) calc(var(--space-2xl) + env(safe-area-inset-bottom)); }
+.auth-panel { width: 100%; max-width: 420px; padding: var(--space-xl) var(--space-lg); }
+.auth-panel h1 { font-size: var(--text-2xl); }
+.auth-panel form { display: grid; gap: var(--space-md); margin-top: var(--space-lg); }
+.pw { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-xs); align-items: center; }
+.auth-error { font-size: var(--text-sm); }
+.auth-note { max-width: none; }
+.auth-panel .btn-primary { min-height: 48px; width: 100%; }
+.auth-switch { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); }
+.auth-switch a { color: var(--color-ink); font-weight: 600; text-underline-offset: 0.2em; }
+@media (max-width: 40rem) { .auth-main { padding-top: var(--space-lg); } .auth-panel { padding: var(--space-lg) var(--space-md); } }
