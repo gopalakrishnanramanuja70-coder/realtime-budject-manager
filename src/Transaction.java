@@ -6,6 +6,7 @@ public class Transaction {
     private String date;        // e.g., "2026-11-20"
     private String description;
 
+    // 6-argument constructor
     public Transaction(int id, String type, String category, double amount, String date, String description) {
         this.id = id;
         setType(type);
@@ -13,6 +14,11 @@ public class Transaction {
         setAmount(amount);
         this.date = date;
         this.description = description;
+    }
+
+    // 5-argument overloaded constructor (defaults description to "")
+    public Transaction(int id, String type, String category, double amount, String date) {
+        this(id, type, category, amount, date, "");
     }
 
     // Getters
