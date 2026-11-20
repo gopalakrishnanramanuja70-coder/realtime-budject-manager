@@ -1,0 +1,11 @@
+{
+  "name": "expensify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal budget manager",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "node scripts/dev.mjs"
+  }
+}

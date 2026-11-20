@@ -25,7 +25,8 @@ public class BudgetManager {
             System.out.println("Error: Amount must be greater than zero.");
             return;
         }
-        Transaction t = new Transaction(nextId++, type.toUpperCase(), category, amount, description);
+        Transaction t = new Transaction(nextId++, type.toUpperCase(), category, amount,
+                java.time.LocalDate.now().toString(), description);
         transactions.add(t);
         System.out.println("Transaction added successfully! (ID: " + t.getId() + ")");
     }
